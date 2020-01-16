@@ -17,9 +17,12 @@ class NeuralNetwork:
         self.wih = np.random.normal(0.0, pow(self.hnodes, -0.5), (self.hnodes, self.inodes))
         self.who = np.random.normal(0.0, pow(self.onodes, -0.5), (self.onodes, self.hnodes))
         # функция активации (сигмоида)
-        self.activation_function = lambda x: sci.expit(x)
+        # self.activation_function = lambda x: sci.expit(x)
         pass
     
+    def activation_function(self, x):
+        return sci.expit(x)
+
     def train(self, inputs_list, targets_list):
         inputs = np.array(inputs_list, ndmin=2).T
         targets = np.array(targets_list, ndmin=2).T
