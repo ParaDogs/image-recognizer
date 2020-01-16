@@ -74,7 +74,7 @@ class App(tk.Tk):
 		# reshaping to support our model input and normalizing
 		img = img.reshape(1, 28*28)
 		# img = img / 255.0
-		inputs = (np.asfarray(img) / 255.0 * 0.99) + 0.01
+		inputs = ((255 - np.asfarray(img)) / 255.0 * 0.99) + 0.01
 		outputs = self.neuro.query(inputs)
 		label = np.argmax(outputs)
 		self.label.configure(text=str(label))
