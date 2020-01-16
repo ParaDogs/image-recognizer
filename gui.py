@@ -72,7 +72,7 @@ class App(tk.Tk):
 		img = img.convert('L')
 		img = np.array(img)
 		# reshaping to support our model input and normalizing
-		# img = img.reshape(200, 784)
+		img = img.reshape(1, 28*28)
 		# img = img / 255.0
 		inputs = (np.asfarray(img) / 255.0 * 0.99) + 0.01
 		outputs = self.neuro.query(inputs)
