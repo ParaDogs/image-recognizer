@@ -45,10 +45,11 @@ class App(tk.Tk):
 	def __init__(self):
 		tk.Tk.__init__(self)
 		self.neuro = init()
+		self.title('Digits recognition')
 		self.x = self.y = 0
 		# Creating elements
 		self.canvas = tk.Canvas(self, width=300, height=300, bg="white", cursor="cross")
-		self.label = tk.Label(self, text="Thinking..", font=("Helvetica", 48))
+		self.label = tk.Label(self, text="Thinking..", font=("Helvetica", 20), justify=LEFT)
 		self.classify_btn = tk.Button(self, text="Recognise", command=self.classify_handwriting)
 		self.button_clear = tk.Button(self, text="Clear", command=self.clear_all)
 		# Grid structure
@@ -72,17 +73,21 @@ class App(tk.Tk):
 		img = img.convert('L')
 		img = np.array(img)
 		# reshaping to support our model input and normalizing
-		img = img.reshape(1, 28*28)
-		# img = img / 255.0
+		img = img.reshape(1, 28 * 28)
 		inputs = ((255 - np.asfarray(img)) / 255.0 * 0.99) + 0.01
 		outputs = self.neuro.query(inputs)
-		label = np.argmax(outputs)
-		self.label.configure(text=str(label))
+		chance = dict(enumerate(outputs))
+		chance = sorted([[str(key), "{0:.2f}%".format(float(val) * 100)] for key, val in chance.items()],
+						key=lambda x: x[1], reverse=True)
+		result = ""
+		for x in chance:
+			result += "{}: {:>8}\n".format(x[0], x[1])
+		self.label.configure(text=result)
 
 	def draw_lines(self, event):
 		self.x = event.x
 		self.y = event.y
-		r = 8
+		r = 10
 		self.canvas.create_oval(self.x - r, self.y - r, self.x + r, self.y + r, fill='black')
 
 
