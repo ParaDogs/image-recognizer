@@ -77,11 +77,11 @@ class App(tk.Tk):
 		inputs = ((255 - np.asfarray(img)) / 255.0 * 0.99) + 0.01
 		outputs = self.neuro.query(inputs)
 		chance = dict(enumerate(outputs))
-		chance = sorted([[str(key), "{0:.2f}%".format(float(val) * 100)] for key, val in chance.items()],
-						key=lambda x: x[1], reverse=True)
+		chance = [[str(key), "{0:.2f}".format(float(val) * 100)] for key, val in chance.items()]
+		chance.sort(key=lambda xx: float(xx[1]), reverse=True)
 		result = ""
 		for x in chance:
-			result += "{}: {:>8}\n".format(x[0], x[1])
+			result += "{}: {:>8}%\n".format(x[0], x[1])
 		self.label.configure(text=result)
 
 	def draw_lines(self, event):
